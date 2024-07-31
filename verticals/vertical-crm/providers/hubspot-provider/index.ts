@@ -600,6 +600,27 @@ export const hubspotProvider = {
       cursor: input?.cursor,
     }),
 
+  // Mark: -  engagements
+  listEmails: async ({instance, input, ctx}) =>
+    input?.sync_mode === 'full'
+      ? _listObjectsFullThenMap(instance, {
+          objectType: 'emails',
+          mapper: mappers.emails,
+          page_size: input?.page_size,
+          cursor: input?.cursor,
+          fields: propertiesToFetch.email,
+          associations: associationsToFetch.email,
+        })
+      : _listObjectsIncrementalThenMap(instance, {
+          ...input,
+          objectType: 'emails',
+          mapper: mappers.emails,
+          fields: propertiesToFetch.email,
+          includeAllFields: true,
+          associations: associationsToFetch.email,
+          ctx,
+        }),
+
   // MARK: - Custom objects
   listCustomObjectRecords: async ({instance, input}) =>
     _listObjectsFullThenMap(instance, {

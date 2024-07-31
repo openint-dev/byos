@@ -142,6 +142,25 @@ export const user = zBaseRecord
   })
   .openapi({ref: 'crm.user'})
 
+export const email = zBaseRecord
+  .extend({
+    from_email: z.string().nullish(),
+    to_email: z.boolean().nullish(),
+    subject: z.string().nullish(),
+    text: z.string().nullish(),
+    html: z.string().nullish(),
+    status: z.string().nullish(),
+    from_first_name: z.string().nullish(),
+    from_last_name: z.string().nullish(),
+    to_first_name: z.string().nullish(),
+    to_last_name: z.string().nullish(),
+    last_activity_at: z.string().nullish(),
+    created_at: z.string().nullish(),
+    is_deleted: z.boolean().nullish(),
+    last_modified_at: z.string().nullish(),
+  })
+  .openapi({ref: 'crm.email'})
+
 // MARK: - Meta
 
 export const meta_object = z

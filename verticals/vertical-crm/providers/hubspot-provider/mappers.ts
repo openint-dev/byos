@@ -138,10 +138,37 @@ export const HSCompany = z.object({
   updatedAt: z.string(),
   archived: z.boolean(),
 })
+export const HSEmail = z.object({
+  id: z.string(),
+  properties: z
+    .object({
+      hs_timestamp: z.string().nullish(),
+      hubspot_owner_id: z.string().nullish(),
+      hs_email_direction: z.string().nullish(),
+      hs_email_html: z.string().nullish(),
+      hs_email_status: z.string().nullish(),
+      hs_email_subject: z.string().nullish(),
+      hs_email_text: z.string().nullish(),
+      hs_email_from_email: z.string().nullish(),
+      hs_email_from_firstname: z.string().nullish(),
+      hs_email_from_lastname: z.string().nullish(),
+      hs_email_to_email: z.string().nullish(),
+      hs_email_to_firstname: z.string().nullish(),
+      hs_email_to_lastname: z.string().nullish(),
+      hs_attachment_ids: z.string().nullish(),
+      hs_email_headers: z.string().nullish(),
+    })
+    .passthrough(),
+  associations: HSAssociations.nullish(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  archived: z.boolean(),
+})
 
 export const associationsToFetch = {
   contact: ['company'],
   deal: ['company'],
+  email: ['email'],
 }
 export const propertiesToFetch = {
   company: [
@@ -193,6 +220,23 @@ export const propertiesToFetch = {
     'pipeline',
     'hs_is_closed_won',
     'hs_is_closed',
+  ],
+  email: [
+    'hs_timestamp',
+    'hubspot_owner_id',
+    'hs_email_direction',
+    'hs_email_html',
+    'hs_email_status',
+    'hs_email_subject',
+    'hs_email_text',
+    'hs_attachment_ids',
+    'hs_email_headers',
+    'hs_email_from_email',
+    'hs_email_from_firstname',
+    'hs_email_from_lastname',
+    'hs_email_to_email',
+    'hs_email_to_firstname',
+    'hs_email_to_lastname',
   ],
 }
 
@@ -263,6 +307,21 @@ export const mappers = {
   customObject: mapper(HSBase, zBaseRecord, {
     id: 'id',
     updated_at: 'properties.hs_lastmodifieddate',
+  }),
+  emails: mapper(HSEmail, unified.email, {
+    id: 'id',
+    from_email: 'properties.hs_email_from_email',
+    to_email: 'properties.hs_email_to_email',
+    subject: 'properties.hs_email_subject',
+    text: 'properties.hs_email_text',
+    html: 'properties.hs_email_html',
+    status: 'properties.hs_email_status',
+    from_first_name: 'properties.hs_email_from_firstname',
+    from_last_name: 'properties.hs_email_from_lastname',
+    to_first_name: 'properties.hs_email_to_firstname',
+    to_last_name: 'properties.hs_email_to_lastname',
+    updated_at: (record) => new Date(record.updatedAt).toISOString(),
+    last_modified_at: (record) => new Date(record.updatedAt).toISOString(),
   }),
 }
 const HSProperties = z.record(z.string())

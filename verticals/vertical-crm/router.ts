@@ -245,6 +245,13 @@ export const crmRouter = trpc.router({
     )
     .output(withWarnings({association_schema: unified.meta_association_schema}))
     .query(async ({input, ctx}) => proxyCallProvider({input, ctx})),
+
+  listEmails: remoteProcedure
+    .meta(oapi({method: 'GET', path: '/emails'}))
+    .input(zPaginationParams.nullish())
+    .output(zPaginatedResult.extend({items: z.array(unified.email)}))
+    .query(async ({input, ctx}) => proxyCallProvider({input, ctx})),
+
   // Update custom object schema didn't work within Supaglue anyways...
 })
 
