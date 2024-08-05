@@ -26,6 +26,9 @@ function pluralizeCommonObjectName(name: string) {
     case 'crm_contact':
     case 'crm_lead':
     case 'crm_user':
+    case 'crm_email':
+    case 'crm_note':
+    case 'crm_call':
     case 'engagement_account':
     case 'engagement_contact':
     case 'engagement_sequence_state':
@@ -191,3 +194,6 @@ export const salesforce_account = getProviderObjectTable('salesforce_account')
 export const custom_objects = getProviderObjectTable('hubspot_productgaps', {
   custom: true,
 })
+export const crm_email = getCommonObjectTable('crm_email')
+export const crm_note = getCommonObjectTable('crm_note')
+export const crm_call = getCommonObjectTable('crm_call')
