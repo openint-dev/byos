@@ -164,11 +164,51 @@ export const HSEmail = z.object({
   updatedAt: z.string(),
   archived: z.boolean(),
 })
+export const HSCall = z.object({
+  id: z.string(),
+  properties: z.object({
+    hs_timestamp: z.string().nullish(),
+    hs_call_body: z.string().nullish(),
+    hs_call_callee_object_id: z.string().nullish(),
+    hs_call_callee_object_type_id: z.string().nullish(),
+    hs_call_direction: z.string().nullish(),
+    hs_call_disposition: z.string().nullish(),
+    hs_call_duration: z.string().nullish(),
+    hs_call_from_number: z.string().nullish(),
+    hs_call_recording_url: z.string().nullish(),
+    hs_call_status: z.string().nullish(),
+    hs_call_title: z.string().nullish(),
+    hs_call_source: z.string().nullish(),
+    hs_call_to_number: z.string().nullish(),
+    hubspot_owner_id: z.string().nullish(),
+    hs_activity_type: z.string().nullish(),
+    hs_attachment_ids: z.string().nullish(),
+  }),
+  associations: HSAssociations.nullish(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  archived: z.boolean(),
+})
+export const HSNote = z.object({
+  id: z.string(),
+  properties: z.object({
+    hs_timestamp: z.string().nullish(),
+    hs_note_body: z.string().nullish(),
+    hubspot_owner_id: z.string().nullish(),
+    hs_attachment_ids: z.string().nullish(),
+  }),
+  associations: HSAssociations.nullish(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  archived: z.boolean(),
+})
 
 export const associationsToFetch = {
   contact: ['company'],
   deal: ['company'],
   email: ['email'],
+  call: ['call'],
+  note: ['note'],
 }
 export const propertiesToFetch = {
   company: [
@@ -238,6 +278,17 @@ export const propertiesToFetch = {
     'hs_email_to_firstname',
     'hs_email_to_lastname',
   ],
+  call: [
+    'hs_call_body',
+    'hs_call_direction',
+    'hs_call_duration',
+    'hs_call_status',
+    'hs_call_from_number',
+    'hs_call_recording_url',
+    'hs_call_disposition',
+    'hs_call_source',
+  ],
+  note: ['hs_note_body', 'hs_attachment_ids'],
 }
 
 export const mappers = {
@@ -320,6 +371,28 @@ export const mappers = {
     from_last_name: 'properties.hs_email_from_lastname',
     to_first_name: 'properties.hs_email_to_firstname',
     to_last_name: 'properties.hs_email_to_lastname',
+    updated_at: (record) => new Date(record.updatedAt).toISOString(),
+    last_modified_at: (record) => new Date(record.updatedAt).toISOString(),
+  }),
+  calls: mapper(HSCall, unified.call, {
+    id: 'id',
+    body: 'properties.hs_call_body',
+    direction: 'properties.hs_call_direction',
+    duration: 'properties.hs_call_duration',
+    status: 'properties.hs_call_status',
+    from_number: 'properties.hs_call_from_number',
+    source: 'properties.hs_call_source',
+    disposition: 'properties.hs_call_disposition',
+    recording_url: 'properties.hs_call_recording_url',
+    created_at: 'properties.hs_timestamp',
+    updated_at: (record) => new Date(record.updatedAt).toISOString(),
+    last_modified_at: (record) => new Date(record.updatedAt).toISOString(),
+  }),
+  notes: mapper(HSNote, unified.note, {
+    id: 'id',
+    body: 'properties.hs_note_body',
+    attachment_ids: 'properties.hs_attachment_ids',
+    created_at: 'properties.hs_timestamp',
     updated_at: (record) => new Date(record.updatedAt).toISOString(),
     last_modified_at: (record) => new Date(record.updatedAt).toISOString(),
   }),

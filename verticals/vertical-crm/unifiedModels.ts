@@ -145,7 +145,7 @@ export const user = zBaseRecord
 export const email = zBaseRecord
   .extend({
     from_email: z.string().nullish(),
-    to_email: z.boolean().nullish(),
+    to_email: z.string().nullish(),
     subject: z.string().nullish(),
     text: z.string().nullish(),
     html: z.string().nullish(),
@@ -160,6 +160,32 @@ export const email = zBaseRecord
     last_modified_at: z.string().nullish(),
   })
   .openapi({ref: 'crm.email'})
+
+export const call = zBaseRecord
+  .extend({
+    name: z.string().nullish(),
+    body: z.string().nullish(),
+    direction: z.string().nullish(),
+    duration: z.string().nullish(),
+    status: z.string().nullish(),
+    from_number: z.string().nullish(),
+    source: z.string().nullish(),
+    recording_url: z.string().nullish(),
+    disposition: z.string().nullish(),
+    created_at: z.string().nullish(),
+    is_deleted: z.boolean().nullish(),
+    last_modified_at: z.string().nullish(),
+  })
+  .openapi({ref: 'crm.call'})
+
+export const note = zBaseRecord
+  .extend({
+    body: z.string().nullish(),
+    attachment_ids: z.string().nullish(),
+    created_at: z.string().nullish(),
+    last_modified_at: z.string().nullish(),
+  })
+  .openapi({ref: 'crm.note'})
 
 // MARK: - Meta
 

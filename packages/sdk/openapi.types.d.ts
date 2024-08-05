@@ -123,6 +123,15 @@ export interface paths {
   '/crm/v2/metadata/associations': {
     post: operations['crm-metadataCreateAssociation']
   }
+  '/crm/v2/call': {
+    get: operations['crm-listCalls']
+  }
+  '/crm/v2/email': {
+    get: operations['crm-listEmails']
+  }
+  '/crm/v2/note': {
+    get: operations['crm-listNotes']
+  }
 }
 
 export interface webhooks {

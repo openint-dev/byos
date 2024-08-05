@@ -621,6 +621,46 @@ export const hubspotProvider = {
           ctx,
         }),
 
+  listCalls: async ({instance, input, ctx}) =>
+    input?.sync_mode === 'full'
+      ? _listObjectsFullThenMap(instance, {
+          objectType: 'calls',
+          mapper: mappers.calls,
+          page_size: input?.page_size,
+          cursor: input?.cursor,
+          fields: propertiesToFetch.call,
+          associations: associationsToFetch.call,
+        })
+      : _listObjectsIncrementalThenMap(instance, {
+          ...input,
+          objectType: 'calls',
+          mapper: mappers.calls,
+          fields: propertiesToFetch.call,
+          includeAllFields: true,
+          associations: associationsToFetch.call,
+          ctx,
+        }),
+
+  listNotes: async ({instance, input, ctx}) =>
+    input?.sync_mode === 'full'
+      ? _listObjectsFullThenMap(instance, {
+          objectType: 'notes',
+          mapper: mappers.notes,
+          page_size: input?.page_size,
+          cursor: input?.cursor,
+          fields: propertiesToFetch.note,
+          associations: associationsToFetch.note,
+        })
+      : _listObjectsIncrementalThenMap(instance, {
+          ...input,
+          objectType: 'notes',
+          mapper: mappers.notes,
+          fields: propertiesToFetch.note,
+          includeAllFields: true,
+          associations: associationsToFetch.note,
+          ctx,
+        }),
+
   // MARK: - Custom objects
   listCustomObjectRecords: async ({instance, input}) =>
     _listObjectsFullThenMap(instance, {
