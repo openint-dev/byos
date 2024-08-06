@@ -379,7 +379,7 @@ export async function syncConnection({
             schema: destination_schema,
           })
         : type === 'standard'
-          ? getProviderObjectTable(fullEntity, {
+          ? getCommonObjectTable(fullEntity, {
               schema: destination_schema,
             })
           : getCommonObjectTable(fullEntity, {
