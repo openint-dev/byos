@@ -4956,34 +4956,53 @@
             "type": "object",
             "additionalProperties": {}
           },
+          "from_email": {
+            "type": ["string", "null"]
+          },
+          "to_email": {
+            "type": ["string", "null"]
+          },
           "subject": {
             "type": ["string", "null"]
           },
+          "text": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["id", "updated_at"]
+      },
+      "crm.call": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "ISO8601 date string"
+          },
+          "raw_data": {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        },
+        "required": ["id", "updated_at"]
+      },
+      "crm.note": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "ISO8601 date string"
+          },
+          "raw_data": {
+            "type": "object",
+            "additionalProperties": {}
+          },
           "body": {
-            "type": ["string", "null"]
-          },
-          "from": {
-            "type": ["string", "null"]
-          },
-          "to": {
-            "type": ["string", "null"]
-          },
-          "cc": {
-            "type": ["string", "null"]
-          },
-          "bcc": {
-            "type": ["string", "null"]
-          },
-          "sent_at": {
-            "type": ["string", "null"]
-          },
-          "received_at": {
-            "type": ["string", "null"]
-          },
-          "is_deleted": {
-            "type": ["boolean", "null"]
-          },
-          "last_modified_at": {
             "type": ["string", "null"]
           }
         },
