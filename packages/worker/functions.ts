@@ -209,7 +209,6 @@ export async function syncConnection({
   const streams = [
     ...unified_objects.map((o) => ({name: o, type: 'unified' as const})),
     ...custom_objects.map((o) => ({name: o, type: 'custom' as const})),
-    ...standard_objects.map((o) => ({name: o, type: 'standard' as const})),
   ]
 
   type Stream = (typeof streams)[number]
@@ -224,48 +223,6 @@ export async function syncConnection({
     try {
       const key = `${stream.type}_${stream.name}`
       if (stream.type === 'unified') {
-        const res = await byos.GET(
-          `/${vertical}/v2/${stream.name}` as '/crm/v2/contact',
-          {params: {query: {cursor: state.cursor, page_size}}},
-        )
-        const count = incrementMetric(`${key}_count`, res.data.items.length)
-        incrementMetric(`${key}_page_count`)
-        console.log(`Syncing ${vertical} ${key} count=${count}`)
-        if (res.data.items.length) {
-          await dbUpsert(
-            db,
-            table as ReturnType<typeof getCommonObjectTable>,
-            res.data.items.map(({raw_data, ...item}) => ({
-              // Primary keys
-              _supaglue_application_id: env.SUPAGLUE_APPLICATION_ID,
-              _supaglue_customer_id: customer_id, //  '$YOUR_CUSTOMER_ID',
-              _supaglue_provider_name: provider_name,
-              id: item.id,
-              // Other columns
-              created_at: sqlNow,
-              updated_at: sqlNow,
-              _supaglue_emitted_at: sqlNow,
-              last_modified_at: sqlNow, // TODO: Fix me...
-              is_deleted: false,
-              // Workaround jsonb support issue... https://github.com/drizzle-team/drizzle-orm/issues/724
-              raw_data: sql`${stripNullByte(raw_data) ?? null}::jsonb`,
-              _supaglue_unified_data: sql`${stripNullByte(item)}::jsonb`,
-            })),
-            {
-              insertOnlyColumns: ['created_at'],
-              noDiffColumns: [
-                '_supaglue_emitted_at',
-                'last_modified_at',
-                'updated_at',
-              ],
-            },
-          )
-        }
-        return {
-          next_cursor: res.data.next_cursor,
-          has_next_page: res.data.has_next_page,
-        }
-      } else if (stream.type === 'standard') {
         const res = await byos.GET(
           `/${vertical}/v2/${stream.name}` as '/crm/v2/contact',
           {params: {query: {cursor: state.cursor, page_size}}},
@@ -378,13 +335,9 @@ export async function syncConnection({
             custom: true,
             schema: destination_schema,
           })
-        : type === 'standard'
-          ? getCommonObjectTable(fullEntity, {
-              schema: destination_schema,
-            })
-          : getCommonObjectTable(fullEntity, {
-              schema: destination_schema,
-            })
+        : getCommonObjectTable(fullEntity, {
+            schema: destination_schema,
+          })
     await db.execute(table.createIfNotExistsSql())
     const state = sync_mode === 'full' ? {} : overallState[name] ?? {}
     overallState[name] = state
@@ -512,8 +465,16 @@ export async function triggerImmediateSync({
   const data = {
     ...event.data,
     vertical: 'crm',
-    unified_objects: ['account', 'contact', 'opportunity', 'lead', 'user'],
-    standard_objects: ['call', 'email', 'note'],
+    unified_objects: [
+      'account',
+      'contact',
+      'opportunity',
+      'lead',
+      'user',
+      'call',
+      'email',
+      'note',
+    ],
     // TODO: Dedupe with this scheduleSyncs
     destination_schema: env.DESTINATION_SCHEMA,
   } satisfies Events['sync.requested']['data']

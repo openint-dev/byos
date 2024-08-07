@@ -67,9 +67,6 @@ switch (cmd) {
             unified_objects: env['UNIFIED_OBJECT']
               ? [env['UNIFIED_OBJECT']]
               : ['account', 'contact', 'opportunity', 'lead', 'user'],
-            standard_objects: env['STANDARD_OBJECT']
-              ? [env['STANDARD_OBJECT']]
-              : ['call', 'email', 'note'],
             custom_objects: env['CUSTOM_OBJECT']
               ? [env['CUSTOM_OBJECT']]
               : undefined,
