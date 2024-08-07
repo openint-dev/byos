@@ -194,6 +194,3 @@ export const salesforce_account = getProviderObjectTable('salesforce_account')
 export const custom_objects = getProviderObjectTable('hubspot_productgaps', {
   custom: true,
 })
-export const crm_email = getCommonObjectTable('crm_email')
-export const crm_note = getCommonObjectTable('crm_note')
-export const crm_call = getCommonObjectTable('crm_call')

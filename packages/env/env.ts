@@ -51,7 +51,6 @@ export const env = createEnv({
     UNIFIED_OBJECT: z
       .enum(['account', 'contact', 'opportunity', 'lead', 'user'])
       .optional(),
-    STANDARD_OBJECT: z.enum(['email', 'note', 'call']).optional(),
     CUSTOM_OBJECT: z.string().optional(),
     SYNC_MODE: z.enum(['incremental', 'full']).optional(),
     PAGE_SIZE: z.string().optional(), // TODO: parse number / boolean from str
@@ -91,7 +90,6 @@ export const env = createEnv({
     SUPAGLUE_APPLICATION_ID: process.env['SUPAGLUE_APPLICATION_ID'],
     SYNC_MODE: process.env['SYNC_MODE'],
     UNIFIED_OBJECT: process.env['UNIFIED_OBJECT'],
-    STANDARD_OBJECT: process.env['STANDARD_OBJECT'],
     VERCEL_URL: process.env['VERCEL_URL'],
     VERTICAL: process.env['VERTICAL'],
     WEBHOOK_SECRET: process.env['WEBHOOK_SECRET'],
